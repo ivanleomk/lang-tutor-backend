@@ -1,14 +1,16 @@
-from typing import Optional
-
+from typing import List
 from fastapi import FastAPI
+from src.models import UserConversationHistory
+from src.chat import generate_language_response
 
 app = FastAPI()
 
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"status": "Ok"}
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
+
+@app.post("/chat")
+def reply_to_user(response: UserConversationHistory):
+    return generate_language_response(response.messages)
